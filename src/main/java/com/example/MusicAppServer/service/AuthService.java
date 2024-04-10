@@ -32,7 +32,6 @@ public class AuthService {
     {
         String password = user.getPassword();
         String sessionId = idSessionProvider.getSessionId();
-        logger.info(password+"   "+password.length());
         if (password.isEmpty() || password.length() < MIN_PASSWORD_LENGTH) {
             return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS, null);
         }
