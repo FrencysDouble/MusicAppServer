@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Artist</title>
+</head>
+<body>
+<h2>Create Artist</h2>
+<form th:action="@{/api/v1/artist/create}" method="post" enctype="multipart/form-data">
+    <label for="name">Artist Name:</label>
+    <input type="text" id="name" name="name"><br><br>
+
+    <label for="photo">Artist Photo:</label>
+    <input type="file" id="photo" name="photo" accept="image/*"><br><br>
+
+    <button type="submit">Create Artist</button>
+</form>
+</body>
+</html>

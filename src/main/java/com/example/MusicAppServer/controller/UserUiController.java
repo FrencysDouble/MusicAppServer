@@ -17,8 +17,14 @@ public class UserUiController {
     }
 
     @GetMapping("/player")
-    public String getPLayer()
+    public String getPlayerUi()
     {
         return "musicPlayerTest";
+    }
+
+    @GetMapping("/artist")
+    public String getArtistUi()
+    {
+        return "artistCreation";
     }
 }

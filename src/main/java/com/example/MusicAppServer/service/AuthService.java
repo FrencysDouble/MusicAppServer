@@ -33,7 +33,7 @@ public class AuthService {
         String password = user.getPassword();
         String sessionId = idSessionProvider.getSessionId();
         if (password.isEmpty() || password.length() < MIN_PASSWORD_LENGTH) {
-            return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS, null);
+            return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS);
         }
         try {
             authRepository.save(user);
@@ -42,7 +42,7 @@ public class AuthService {
         }
         catch (DataAccessException e) {
             e.printStackTrace();
-            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR, null);
+            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
         }
         return new OperationResult<>(OperationStatus.SUCCESS, sessionId);
     }
@@ -57,12 +57,12 @@ public class AuthService {
                 return new OperationResult<>(OperationStatus.SUCCESS, sessionId);
             }
             else {
-                return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS, null);
+                return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS);
             }
         }
         catch (NullPointerException e) {
             e.printStackTrace();
-            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR, null);
+            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

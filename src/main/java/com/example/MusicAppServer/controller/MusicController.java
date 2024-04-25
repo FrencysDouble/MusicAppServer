@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 @RestController
@@ -27,7 +26,7 @@ public class MusicController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadMusic(@RequestParam("file") MultipartFile file)
+    public ResponseEntity uploadMusic(@RequestParam("file") MultipartFile file)
     {
         OperationResult<String> status = musicService.uploadMusic(file);
         return responseService.buildResponse(status.getStatus(),status.getData());

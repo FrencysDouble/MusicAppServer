@@ -5,16 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+/**
+ * This is the Service for building Responses for a Controllers
+ */
+
 @Service
 public class ResponseService {
 
-    public ResponseEntity<String> buildResponse(OperationStatus status, String body) {
+    public <T> ResponseEntity buildResponse(OperationStatus status,T body) {
         HttpStatus httpStatus;
         String message = switch (status) {
-            case SUCCESS -> {
-                httpStatus = HttpStatus.OK;
-                yield body;
-            }
             case INVALID_CREDENTIALS -> {
                 httpStatus = HttpStatus.UNAUTHORIZED;
                 yield "Invalid credentials";
@@ -28,6 +28,11 @@ public class ResponseService {
                 yield "Bad request";
             }
         };
+            if (status == OperationStatus.SUCCESS)
+            {
+                httpStatus = HttpStatus.OK;
+                return ResponseEntity.status(httpStatus).body(body);
+            }
 
         return ResponseEntity.status(httpStatus).body(message);
     }

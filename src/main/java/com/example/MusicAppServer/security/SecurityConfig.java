@@ -22,7 +22,7 @@ public class SecurityConfig
     @Bean
     public SecurityFilterChain springSecurityFilter(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/v1/user/**","/api/v1/music/**","api/v1/ui/**")
+                        auth.requestMatchers("/api/v1/user/**","/api/v1/music/**","api/v1/ui/**","api/v1/artist/**")
                                 .permitAll().anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement ->
