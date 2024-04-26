@@ -7,6 +7,7 @@ import com.example.MusicAppServer.service.ResponseService;
 import com.example.MusicAppServer.service.state.OperationResult;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,16 +24,17 @@ public class ArtistController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity addArtist(@RequestBody Artist artist)
+    public ResponseEntity addArtist(@RequestParam("imageFile")MultipartFile image, @ModelAttribute Artist artist)
     {
-        OperationResult<String> status = artistService.createArtist(artist);
+        OperationResult<String> status = artistService.createArtist(artist,image);
         return responseService.buildResponse(status.getStatus() , status.getData());
     }
 
     @GetMapping("/getall")
     public ResponseEntity getAll()
     {
-        OperationResult<List<Artist>> status = artistService.getAll();
+        OperationResult status = artistService.getAll();
+        System.out.println(status.getListData().toString());
         return responseService.buildResponse(status.getStatus(), status.getListData());
     }
 }

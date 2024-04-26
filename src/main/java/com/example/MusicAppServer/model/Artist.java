@@ -21,9 +21,8 @@ public class Artist {
     @Column(name ="name")
     private String name;
 
-    @Lob
-    @Column(name = "image", columnDefinition="BLOB")
-    private byte[] image;
+    @Column(name = "image_path")
+    private String imagePath;
 
     /*@OneToMany(mappedBy = "Album", cascade = CascadeType.ALL)
     private List<Album> albums = new ArrayList<>();*/

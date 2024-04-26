@@ -19,8 +19,8 @@ public class OperationResult<T> {
 
     public OperationResult(OperationStatus status, List<T> listData) {
         this.status = status;
-        this.data = null;
         this.listData = listData;
+        this.data = null;
     }
 
     public OperationResult(OperationStatus status)

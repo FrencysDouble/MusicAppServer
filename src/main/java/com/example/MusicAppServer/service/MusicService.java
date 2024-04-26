@@ -26,16 +26,16 @@ public class MusicService {
     {
         if (file.isEmpty())
         {
-            return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS,null);
+            return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS);
         }
         try {
             fileService.saveMusicFile(file);
-            return new OperationResult<>(OperationStatus.SUCCESS,null);
+            return new OperationResult<>(OperationStatus.SUCCESS);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR,null);
+            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
