@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 @RequestMapping("/api/v1/music")
 public class MusicController {
 
-    private final MusicService musicService;
+   /* private final MusicService musicService;
     private final ResponseService responseService;
 
     public MusicController(MusicService musicService, ResponseService responseService) {
@@ -45,6 +45,6 @@ public class MusicController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
-    }
+    }*/
 
 }

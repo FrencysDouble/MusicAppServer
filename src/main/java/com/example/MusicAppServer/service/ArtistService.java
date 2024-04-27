@@ -19,17 +19,16 @@ public class ArtistService {
 
     private final ArtistRepository artistRepository;
 
-    private final FileService fileService;
 
-    public ArtistService(ArtistRepository artistRepository, FileService fileService) {
+    public ArtistService(ArtistRepository artistRepository) {
         this.artistRepository = artistRepository;
-        this.fileService = fileService;
     }
 
-    public OperationResult<String> createArtist(Artist artist, MultipartFile image) {
+    public OperationResult createArtist(Artist artist, MultipartFile image) {
         try {
             if (image != null && !image.isEmpty()) {
-                String filePath = fileService.saveImageFile(image);
+                FileService fileService = new FileService(image,artist.getId());
+                String filePath = fileService.saveArtistImage();
                 artist.setImagePath(filePath);
             }
             artistRepository.save(artist);

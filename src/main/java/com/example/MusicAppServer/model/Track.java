@@ -13,16 +13,15 @@ public class Track {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
-    @Column(name ="name")
+    @Column(name = "name")
     private String name;
 
-    @Lob
-    @Column(name = "image", columnDefinition="BLOB")
-    private byte[] image;
-
-    /*@ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
-    private Album album;*/
+    private Album album;
+
+    @Column(name = "audio_path")
+    private String audioPath;
 }

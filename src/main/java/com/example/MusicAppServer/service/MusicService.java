@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @Service
 public class MusicService {
-    private final FileService fileService;
+    /*private final FileService fileService;
 
     public MusicService(FileService fileService) {
         this.fileService = fileService;
@@ -29,7 +29,7 @@ public class MusicService {
             return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS);
         }
         try {
-            fileService.saveMusicFile(file);
+            fileServices;
             return new OperationResult<>(OperationStatus.SUCCESS);
         }
         catch (Exception e)
@@ -47,5 +47,5 @@ public class MusicService {
         }
 
         return new FileSystemResource(musicFile);
-    }
+    }*/
 }

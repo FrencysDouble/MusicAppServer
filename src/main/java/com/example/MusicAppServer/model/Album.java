@@ -4,6 +4,7 @@ package com.example.MusicAppServer.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +18,22 @@ public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
-    @Column(name ="name")
+    @Column(name = "name")
     private String name;
 
-    @Lob
-    @Column(name = "image", columnDefinition="BLOB")
-    private byte[] image;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
 
-    /*@OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
-    private List<Track> tracks = new ArrayList<>();*/
+    @Column(name = "image_path")
+    private String imagePath;
+
+    @ElementCollection
+    @CollectionTable(name = "album_track")
+    private List<String> trackNames;
+
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
+    private List<Track> tracks;
 }

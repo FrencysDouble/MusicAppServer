@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/ui")
 public class UserUiController {
 
-    @GetMapping
+    @GetMapping("/upload")
     public String getUi()
     {
         return "upload";
@@ -26,5 +26,22 @@ public class UserUiController {
     public String getArtistUi()
     {
         return "artistCreation";
+    }
+
+    @GetMapping()
+    public String getAuthUi()
+    {
+        return "auth";
+    }
+
+    @GetMapping("/album")
+    public String getAlbumUi()
+    {
+        return "albumCreation";
+    }
+    @GetMapping("admin")
+    public String getAdminUi()
+    {
+        return "adminMainMenu";
     }
 }

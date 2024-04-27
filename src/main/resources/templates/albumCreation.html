@@ -1,22 +1,132 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create Album</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Album</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="file"] {
+            width: calc(100% - 100px);
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .track-input {
+            display: flex;
+            align-items: center;
+        }
+        .track-input input[type="text"] {
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-<h2>Create Album</h2>
-<form th:action="@{/api/v1/album/create}" method="post" enctype="multipart/form-data">
-    <label for="name">Album Name:</label>
-    <input type="text" id="name" name="name"><br><br>
+<div class="container">
+    <h2>Upload Album</h2>
+    <form id="albumForm" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="albumName">Album Name:</label>
+            <input type="text" id="albumName" name="name" required>
+        </div>
+        <input type="hidden" id="artistId" name="artistId" value="">
+        <div class="form-group">
+            <label for="albumImage">Album Image:</label>
+            <input type="file" id="albumImage" name="imageFile" accept="image/*" required>
+        </div>
+        <div id="trackInputs">
+            <div class="form-group track-input">
+                <input type="text" name="trackNames" placeholder="Track Name" required>
+                <input type="file" name="audioFiles" accept="audio/*" required>
+                <button type="button" onclick="removeTrackInput(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" onclick="addTrackInput()">Add Track</button>
+        <button type="submit">Upload</button>
+    </form>
+</div>
 
-    <label for="image">Album Image:</label>
-    <input type="file" id="image" name="image" accept="image/*"><br><br>
+<script>
 
-    <label for="tracks">Tracks:</label><br>
-    <input type="file" id="tracks" name="tracks" accept=".mp3" multiple><br><br>
+    function getArtistIdFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('artistId');
+    }
 
-    <button type="submit">Create Album</button>
-</form>
+    document.addEventListener('DOMContentLoaded', function() {
+        const artistIdInput = document.getElementById('artistId');
+        artistIdInput.value = getArtistIdFromUrl();
+    });
+
+    function addTrackInput() {
+        const trackInputs = document.getElementById('trackInputs');
+        const trackInput = document.createElement('div');
+        trackInput.classList.add('form-group', 'track-input');
+        trackInput.innerHTML = `
+        <input type="text" name="trackNames[]" placeholder="Track Name" required>
+        <input type="file" name="trackFiles[]" accept="audio/*" required>
+        <button type="button" onclick="removeTrackInput(this)">Remove</button>
+    `;
+        trackInputs.appendChild(trackInput);
+    }
+
+
+    function removeTrackInput(button) {
+        button.parentNode.remove();
+    }
+
+    document.getElementById('albumForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch('/api/v1/album/create', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Album uploaded successfully!');
+                } else {
+                    alert('Failed to upload album.');
+                }
+            })
+            .catch(error => {
+                console.error('Error uploading album:', error);
+                alert('An error occurred while uploading the album.');
+            });
+    });
+</script>
 </body>
 </html>
