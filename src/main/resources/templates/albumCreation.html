@@ -67,8 +67,8 @@
         </div>
         <div id="trackInputs">
             <div class="form-group track-input">
-                <input type="text" name="trackNames" placeholder="Track Name" required>
-                <input type="file" name="audioFiles" accept="audio/*" required>
+                <input type="text" name="trackNames[]" placeholder="Track Name" required>
+                <input type="file" name="audioFiles[]" accept="audio/*" required>
                 <button type="button" onclick="removeTrackInput(this)">Remove</button>
             </div>
         </div>
@@ -95,7 +95,7 @@
         trackInput.classList.add('form-group', 'track-input');
         trackInput.innerHTML = `
         <input type="text" name="trackNames[]" placeholder="Track Name" required>
-        <input type="file" name="trackFiles[]" accept="audio/*" required>
+        <input type="file" name="audioFiles[]" accept="audio/*" required>
         <button type="button" onclick="removeTrackInput(this)">Remove</button>
     `;
         trackInputs.appendChild(trackInput);
@@ -110,6 +110,7 @@
         event.preventDefault();
 
         const formData = new FormData(this);
+        console.log(formData);
 
         fetch('/api/v1/album/create', {
             method: 'POST',

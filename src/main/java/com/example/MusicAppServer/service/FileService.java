@@ -26,9 +26,8 @@ public class FileService {
 
     public static final String uploadDir = "artists/";
 
-    public static final String imageFileName = "artistLogo";
-    private static final String musicUploadDir = "music/files/";
-    public static final String imageUploadDir = "image/files/";
+    public static final String imageArtistFileName = "artistLogo";
+    public static final String imageAlbumFileName = "albumLogo";
 
     private final MultipartFile image;
 
@@ -94,7 +93,14 @@ public class FileService {
             Files.createDirectories(uploadPath);
         }
 
-        Path filePath = uploadPath.resolve(imageFileName);
+        if (directory.contains("/Albums/"))
+        {
+            Path filePath = uploadPath.resolve(imageAlbumFileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            return filePath.toString();
+        }
+
+        Path filePath = uploadPath.resolve(imageArtistFileName);
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         return filePath.toString();
     }
@@ -109,7 +115,6 @@ public class FileService {
 
         Path filePath = uploadPath.resolve(trackName+".mp3");
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        System.out.println("dasdadasdasadadasdasdada = " +  filePath.toString());
         return filePath.toString();
     }
 

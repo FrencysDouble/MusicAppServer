@@ -35,6 +35,7 @@ public class AlbumService {
 
             String albumImagePath = fileService.saveAlbumImage();
             album.setImagePath(albumImagePath);
+            album.setArtist_id(artistId);
 
             List<String> tracksPath = fileService.saveAlbumAudioFiles();
 

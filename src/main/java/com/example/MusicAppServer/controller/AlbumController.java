@@ -30,9 +30,8 @@ public class AlbumController {
     public ResponseEntity addAlbum(@RequestParam("artistId") Long artistId,
                                    @RequestParam("imageFile") MultipartFile image,
                                    @ModelAttribute Album album,
-                                   @RequestParam("audioFiles") List<MultipartFile> audioFiles)
+                                   @RequestParam("audioFiles[]") List<MultipartFile> audioFiles)
     {
-        System.out.println("AudiOfILES SIZE = " +audioFiles.size());
         for (MultipartFile file : audioFiles) {
             System.out.println(file);
         }

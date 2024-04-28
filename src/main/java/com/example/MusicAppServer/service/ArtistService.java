@@ -27,6 +27,7 @@ public class ArtistService {
     public OperationResult createArtist(Artist artist, MultipartFile image) {
         try {
             if (image != null && !image.isEmpty()) {
+                artistRepository.save(artist);
                 FileService fileService = new FileService(image,artist.getId());
                 String filePath = fileService.saveArtistImage();
                 artist.setImagePath(filePath);
