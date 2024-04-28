@@ -33,7 +33,6 @@ public class ArtistController {
     public ResponseEntity getAll()
     {
         OperationResult status = artistService.getAll();
-        System.out.println(status.getListData().toString());
         return responseService.buildResponse(status.getStatus(), status.getListData());
     }
 }

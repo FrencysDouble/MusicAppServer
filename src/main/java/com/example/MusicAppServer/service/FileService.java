@@ -25,7 +25,6 @@ import java.util.Objects;
 public class FileService {
 
     public static final String uploadDir = "artists/";
-
     public static final String imageArtistFileName = "artistLogo";
     public static final String imageAlbumFileName = "albumLogo";
 

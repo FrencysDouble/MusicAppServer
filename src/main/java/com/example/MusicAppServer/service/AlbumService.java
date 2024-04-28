@@ -56,4 +56,38 @@ public class AlbumService {
         }
         return new OperationResult<>(OperationStatus.SUCCESS);
     }
+
+    public OperationResult getAllAlbums()
+    {
+        try {
+            List<Album> albums = albumRepository.findAll();
+            if (albums == null)
+            {
+                return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new OperationResult<>(OperationStatus.SUCCESS,albums);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public OperationResult getAllAlbumsByArtistId(Long id)
+    {
+        try {
+            List<Album> albums = albumRepository.findAlbumsByArtist_id(id);
+            if (albums == null)
+            {
+                return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

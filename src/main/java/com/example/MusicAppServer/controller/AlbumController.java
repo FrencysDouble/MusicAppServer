@@ -39,4 +39,18 @@ public class AlbumController {
         return responseService.buildResponse(status.getStatus() , status.getData());
     }
 
+    @GetMapping("/getall")
+    public ResponseEntity getAll()
+    {
+        OperationResult status = albumService.getAllAlbums();
+        return responseService.buildResponse(status.getStatus(),status.getData());
+    }
+
+    @GetMapping("/getAlbumArtistBy/{id}")
+    public ResponseEntity getAlbumArtistById(@PathVariable("id") Long id)
+    {
+        OperationResult status = albumService.getAllAlbumsByArtistId(id);
+        return responseService.buildResponse(status.getStatus(),status.getData());
+    }
+
 }

@@ -23,7 +23,7 @@ public class Album {
     @Column(name = "name")
     private String name;
 
-    @Column
+    @Column(name = "artist_id")
     private Long artist_id;
 
     @Column(name = "image_path")
