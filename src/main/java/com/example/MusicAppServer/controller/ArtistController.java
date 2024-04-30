@@ -35,4 +35,11 @@ public class ArtistController {
         OperationResult status = artistService.getAll();
         return responseService.buildResponse(status.getStatus(), status.getListData());
     }
+
+    @GetMapping("/getArtistBy/{id}")
+    public ResponseEntity getArtistById(@PathVariable("id") Long id)
+    {
+        OperationResult status = artistService.getById(id);
+        return responseService.buildResponse(status.getStatus(),status.getData());
+    }
 }

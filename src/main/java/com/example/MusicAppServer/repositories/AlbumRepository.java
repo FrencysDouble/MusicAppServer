@@ -9,6 +9,6 @@ public interface AlbumRepository extends JpaRepository<Album,Long> {
 
     List<Album> findAll();
 
-    List<Album> findAlbumsByArtist_id(Long artist_id);
+    List<Album> findAlbumsByArtistId(Long artistId);
 
 }

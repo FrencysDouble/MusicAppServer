@@ -54,4 +54,18 @@ public class ArtistService {
             return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public OperationResult getById(Long id) {
+        try {
+            Artist artist = artistRepository.getById(id);
+            System.out.println(artist.getName());
+            if (artist == null) {
+                return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new OperationResult<>(OperationStatus.SUCCESS, artist);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

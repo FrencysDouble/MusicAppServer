@@ -35,7 +35,7 @@ public class AlbumService {
 
             String albumImagePath = fileService.saveAlbumImage();
             album.setImagePath(albumImagePath);
-            album.setArtist_id(artistId);
+            album.setArtistId(artistId);
 
             List<String> tracksPath = fileService.saveAlbumAudioFiles();
 
@@ -61,6 +61,7 @@ public class AlbumService {
     {
         try {
             List<Album> albums = albumRepository.findAll();
+            System.out.println("Album Size = " + albums.size());
             if (albums == null)
             {
                 return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
@@ -77,12 +78,13 @@ public class AlbumService {
     public OperationResult getAllAlbumsByArtistId(Long id)
     {
         try {
-            List<Album> albums = albumRepository.findAlbumsByArtist_id(id);
+            List<Album> albums = albumRepository.findAlbumsByArtistId(id);
+            System.out.println("Album Size = " + albums.size());
             if (albums == null)
             {
                 return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
             }
-            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+            return new OperationResult<>(OperationStatus.SUCCESS,albums);
         }
         catch (Exception e)
         {

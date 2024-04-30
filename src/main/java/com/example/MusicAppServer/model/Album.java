@@ -1,6 +1,7 @@
 package com.example.MusicAppServer.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,8 +24,8 @@ public class Album {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "artist_id")
-    private Long artist_id;
+    @Column(name = "artistId")
+    private Long artistId;
 
     @Column(name = "image_path")
     private String imagePath;
