@@ -1,5 +1,6 @@
 package com.example.MusicAppServer.controller;
 
+import com.example.MusicAppServer.repositories.TrackRepository;
 import com.example.MusicAppServer.service.MusicService;
 import com.example.MusicAppServer.service.ResponseService;
 import com.example.MusicAppServer.service.state.OperationResult;
@@ -17,34 +18,25 @@ import java.io.FileNotFoundException;
 @RequestMapping("/api/v1/music")
 public class MusicController {
 
-   /* private final MusicService musicService;
-    private final ResponseService responseService;
+    private final MusicService musicService;
 
-    public MusicController(MusicService musicService, ResponseService responseService) {
+    public MusicController(MusicService musicService) {
         this.musicService = musicService;
-        this.responseService = responseService;
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity uploadMusic(@RequestParam("file") MultipartFile file)
-    {
-        OperationResult<String> status = musicService.uploadMusic(file);
-        return responseService.buildResponse(status.getStatus(),status.getData());
-    }
-
-    @GetMapping(value = "/stream/{filename}",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Resource> streamMusic(@PathVariable String filename)
+    @GetMapping(value = "/stream/{id}",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<Resource> streamMusic(@PathVariable Long id)
     {
         try {
-            Resource resource = musicService.streamMusic(filename);
+            Resource resource = musicService.streamMusic(id);
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION)
                     .body(resource);
         } catch (FileNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
-    }*/
+    }
 
 }

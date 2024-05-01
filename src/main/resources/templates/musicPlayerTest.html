@@ -8,9 +8,9 @@
 <body>
 <h1>Music Streaming Test</h1>
 <div>
-    <label for="filename">Enter Music File Name:</label>
-    <input type="text" id="filename" name="filename">
-    <button onclick="streamMusic()">Stream Music</button>
+    <label for="trackId">Enter Track ID:</label>
+    <input type="text" id="trackId" name="trackId">
+    <button onclick="streamTrack()">Stream Track</button>
 </div>
 <div id="player">
     <audio controls id="audioPlayer">
@@ -19,14 +19,26 @@
 </div>
 
 <script>
-    function streamMusic() {
-        var filename = document.getElementById("filename").value;
+    function streamTrack() {
+        var trackId = document.getElementById("trackId").value;
         var audioPlayer = document.getElementById("audioPlayer");
-        var url = "http://localhost:8080/api/v1/music/stream/" + filename;
+        var url = "http://localhost:8080/api/v1/music/stream/" + trackId;
 
-        // Set the audio player source to the stream URL
-        audioPlayer.src = url;
-        audioPlayer.play(); // Start playing the audio
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                var objectURL = URL.createObjectURL(blob);
+                audioPlayer.src = objectURL;
+                audioPlayer.play();
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
     }
 </script>
 </body>

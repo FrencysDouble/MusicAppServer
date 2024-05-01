@@ -1,6 +1,8 @@
 package com.example.MusicAppServer.service;
 
 
+import com.example.MusicAppServer.model.Track;
+import com.example.MusicAppServer.repositories.TrackRepository;
 import com.example.MusicAppServer.service.state.OperationResult;
 import com.example.MusicAppServer.service.state.OperationStatus;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -16,36 +18,24 @@ import java.io.IOException;
 
 @Service
 public class MusicService {
-    /*private final FileService fileService;
+    private final FileService fileService;
 
-    public MusicService(FileService fileService) {
+    private final TrackRepository trackRepository;
+
+    public MusicService(FileService fileService, TrackRepository trackRepository) {
         this.fileService = fileService;
+        this.trackRepository = trackRepository;
     }
 
-    public OperationResult<String> uploadMusic(MultipartFile file)
-    {
-        if (file.isEmpty())
-        {
-            return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS);
-        }
-        try {
-            fileServices;
-            return new OperationResult<>(OperationStatus.SUCCESS);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    public Resource streamMusic(Long id) throws FileNotFoundException {
 
-    public Resource streamMusic(String fileName) throws FileNotFoundException {
-        File musicFile = fileService.getMusicFile(fileName);
-
+        Track track = trackRepository.getById(id);
+        String path = track.getAudioPath();
+        File musicFile = fileService.getMusicFile(path);
         if (!musicFile.exists()) {
-            throw new FileNotFoundException("Music file not found: " + fileName);
+            throw new FileNotFoundException("Music file not found: " + path);
         }
 
         return new FileSystemResource(musicFile);
-    }*/
+    }
 }

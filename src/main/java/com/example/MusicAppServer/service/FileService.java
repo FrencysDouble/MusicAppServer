@@ -117,88 +117,15 @@ public class FileService {
         return filePath.toString();
     }
 
-
-
-
-
-
-
-
-
-
-    /*public void saveMusicFile(MultipartFile file) throws IOException {
-        Path uploadPath = Paths.get(musicUploadDir);
-
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-
-        Path filePath = uploadPath.resolve(Objects.requireNonNull(file.getOriginalFilename()));
-        Files.copy(file.getInputStream(), filePath);
-    }
-
-    public File getMusicFile(String filename) throws FileNotFoundException {
-        Path filePath = Paths.get(musicUploadDir + filename);
+    public File getMusicFile(String path) throws FileNotFoundException {
+        Path filePath = Paths.get(path);
         File musicFile = filePath.toFile();
 
         if (!musicFile.exists()) {
-            throw new FileNotFoundException("Music file not found: " + filename);
+            throw new FileNotFoundException("Music file not found: " + path);
         }
 
         return musicFile;
     }
-
-
-    public String saveImageFile(MultipartFile image,Long artistId) throws IOException {
-        Path uploadPath = Paths.get(imageUploadDir);
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-        String originalFilename = image.getOriginalFilename();
-        String filename = StringUtils.cleanPath(Objects.requireNonNull(originalFilename));
-        String imagePath = imageUploadDir + filename;
-        try (InputStream inputStream = image.getInputStream()) {
-            Path filePath = uploadPath.resolve(filename);
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new IOException("Failed to save image file: " + filename, e);
-        }
-        return imagePath;
-    }
-
-    public File getImageFile(String filename) throws FileNotFoundException
-    {
-        Path filePath = Paths.get(imageUploadDir + filename);
-        File imageFile = filePath.toFile();
-
-        if (!imageFile.exists()) {
-            throw new FileNotFoundException("Image file not found: " + filename);
-        }
-
-        return imageFile;
-    }
-    public void saveArtistImage(MultipartFile image, Long artistId) throws IOException {
-        Path uploadPath = Paths.get(uploadDir + artistId + "/");
-
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-
-        Path filePath = uploadPath.resolve(image.getOriginalFilename());
-        Files.copy(image.getInputStream(), filePath);
-    }
-
-    public void saveAlbumAudioFiles(List<MultipartFile> audioFiles, Long artistId, Long albumId) throws IOException {
-        Path uploadPath = Paths.get(uploadDir + artistId + "/" + albumId + "/");
-
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-
-        for (MultipartFile audioFile : audioFiles) {
-            Path filePath = uploadPath.resolve(audioFile.getOriginalFilename());
-            Files.copy(audioFile.getInputStream(), filePath);
-        }
-    }*/
 
 }

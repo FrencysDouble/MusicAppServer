@@ -25,7 +25,7 @@ public class ArtistController {
     @PostMapping("/create")
     public ResponseEntity addArtist(@RequestParam("imageFile")MultipartFile image, @ModelAttribute Artist artist)
     {
-        OperationResult<String> status = artistService.createArtist(artist,image);
+        OperationResult status = artistService.createArtist(artist,image);
         return responseService.buildResponse(status.getStatus() , status.getData());
     }
 
