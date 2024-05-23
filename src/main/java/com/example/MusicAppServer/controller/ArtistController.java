@@ -42,4 +42,11 @@ public class ArtistController {
         OperationResult status = artistService.getById(id);
         return responseService.buildResponse(status.getStatus(),status.getData());
     }
+
+    @GetMapping("/getByName")
+    public ResponseEntity getArtistByName(@RequestParam String name)
+    {
+        OperationResult status = artistService.getByName(name);
+        return responseService.buildResponse(status.getStatus(),status.getListData());
+    }
 }

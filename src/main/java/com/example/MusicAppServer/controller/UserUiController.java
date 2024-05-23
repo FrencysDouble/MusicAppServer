@@ -39,7 +39,7 @@ public class UserUiController {
     {
         return "albumCreation";
     }
-    @GetMapping("admin")
+    @GetMapping("/admin")
     public String getAdminUi()
     {
         return "adminMainMenu";

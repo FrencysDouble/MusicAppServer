@@ -6,15 +6,15 @@ import com.example.MusicAppServer.repositories.TrackRepository;
 import com.example.MusicAppServer.service.state.OperationResult;
 import com.example.MusicAppServer.service.state.OperationStatus;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 
 @Service
 public class MusicService {
@@ -27,15 +27,13 @@ public class MusicService {
         this.trackRepository = trackRepository;
     }
 
-    public Resource streamMusic(Long id) throws FileNotFoundException {
-
+    public File streamMusic(Long id) throws FileNotFoundException {
         Track track = trackRepository.getById(id);
         String path = track.getAudioPath();
-        File musicFile = fileService.getMusicFile(path);
+        File musicFile = fileService.getFile(path);
         if (!musicFile.exists()) {
             throw new FileNotFoundException("Music file not found: " + path);
         }
-
-        return new FileSystemResource(musicFile);
+        return musicFile;
     }
 }

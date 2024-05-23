@@ -32,9 +32,6 @@ public class AlbumController {
                                    @ModelAttribute Album album,
                                    @RequestParam("audioFiles[]") List<MultipartFile> audioFiles)
     {
-        for (MultipartFile file : audioFiles) {
-            System.out.println(file);
-        }
         OperationResult status = albumService.createAlbum(artistId,album,image,audioFiles);
         return responseService.buildResponse(status.getStatus() , status.getData());
     }
@@ -51,6 +48,13 @@ public class AlbumController {
     public ResponseEntity getAlbumArtistById(@PathVariable("id") Long id)
     {
         OperationResult status = albumService.getAllAlbumsByArtistId(id);
+        return responseService.buildResponse(status.getStatus(),status.getListData());
+    }
+
+    @GetMapping("/getByName")
+    public ResponseEntity getAlbumByName(@RequestParam String name)
+    {
+        OperationResult status = albumService.getByName(name);
         return responseService.buildResponse(status.getStatus(),status.getListData());
     }
 

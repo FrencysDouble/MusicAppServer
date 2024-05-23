@@ -27,6 +27,9 @@ public class Album {
     @Column(name = "artistId")
     private Long artistId;
 
+    @Column(name = "artistName")
+    private String artistName;
+
     @Column(name = "image_path")
     private String imagePath;
 

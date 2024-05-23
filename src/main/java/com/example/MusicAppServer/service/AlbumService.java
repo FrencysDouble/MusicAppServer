@@ -5,6 +5,7 @@ import com.example.MusicAppServer.model.Album;
 import com.example.MusicAppServer.model.Artist;
 import com.example.MusicAppServer.model.Track;
 import com.example.MusicAppServer.repositories.AlbumRepository;
+import com.example.MusicAppServer.repositories.ArtistRepository;
 import com.example.MusicAppServer.repositories.TrackRepository;
 import com.example.MusicAppServer.service.state.OperationResult;
 import com.example.MusicAppServer.service.state.OperationStatus;
@@ -20,9 +21,12 @@ public class AlbumService {
 
     private final TrackRepository trackRepository;
 
-    public AlbumService(AlbumRepository albumRepository, TrackRepository trackRepository) {
+    private final ArtistRepository artistRepository;
+
+    public AlbumService(AlbumRepository albumRepository, TrackRepository trackRepository, ArtistRepository artistRepository) {
         this.albumRepository = albumRepository;
         this.trackRepository = trackRepository;
+        this.artistRepository = artistRepository;
     }
 
 
@@ -36,6 +40,7 @@ public class AlbumService {
             String albumImagePath = fileService.saveAlbumImage();
             album.setImagePath(albumImagePath);
             album.setArtistId(artistId);
+            album.setArtistName(artistRepository.getById(artistId).getName());
 
             List<String> tracksPath = fileService.saveAlbumAudioFiles();
 
@@ -43,11 +48,11 @@ public class AlbumService {
 
             for (int i = 0; i < album.getTrackNames().size(); i++) {
                 Track track = new Track();
-                System.out.println(album.getTrackNames().get(i));
-                System.out.println(tracksPath.get(i));
                 track.setName(album.getTrackNames().get(i));
                 track.setAudioPath(tracksPath.get(i));
                 track.setAlbum(album);
+                track.setArtistName(artistRepository.getById(artistId).getName());
+                track.setImage_path(albumImagePath);
                 trackRepository.save(track);
             }
         } catch (IOException e) {
@@ -92,4 +97,24 @@ public class AlbumService {
             return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public OperationResult getByName(String name)
+    {
+        try {
+            List<Album> albums = albumRepository.findByNameContainingIgnoreCase(name);
+            System.out.println(albums.size());
+            if (albums == null)
+            {
+                return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new OperationResult<>(OperationStatus.SUCCESS,albums);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

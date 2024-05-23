@@ -29,4 +29,11 @@ public class Track {
     @Column(name = "audio_path")
     private String audioPath;
 
+    @Column(name = "artistName")
+    private String artistName;
+
+    @Column(name = "image_path")
+    private String image_path;
+
+
 }

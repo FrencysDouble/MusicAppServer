@@ -117,7 +117,7 @@ public class FileService {
         return filePath.toString();
     }
 
-    public File getMusicFile(String path) throws FileNotFoundException {
+    public File getFile(String path) throws FileNotFoundException {
         Path filePath = Paths.get(path);
         File musicFile = filePath.toFile();
 

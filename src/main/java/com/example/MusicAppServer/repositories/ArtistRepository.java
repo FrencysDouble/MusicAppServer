@@ -10,4 +10,6 @@ public interface ArtistRepository extends JpaRepository<Artist,Long> {
     Artist getById(Long id);
     List<Artist> findAll();
 
+    List<Artist> findByNameContainingIgnoreCase(String name);
+
 }
