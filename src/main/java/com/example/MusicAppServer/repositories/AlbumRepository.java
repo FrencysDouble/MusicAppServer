@@ -12,5 +12,6 @@ public interface AlbumRepository extends JpaRepository<Album,Long> {
     List<Album> findAlbumsByArtistId(Long artistId);
 
     List<Album> findByNameContainingIgnoreCase(String name);
+    Album findAlbumById(Long id);
 
 }

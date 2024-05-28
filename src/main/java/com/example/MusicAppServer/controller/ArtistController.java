@@ -36,7 +36,7 @@ public class ArtistController {
         return responseService.buildResponse(status.getStatus(), status.getListData());
     }
 
-    @GetMapping("/getArtistBy/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity getArtistById(@PathVariable("id") Long id)
     {
         OperationResult status = artistService.getById(id);

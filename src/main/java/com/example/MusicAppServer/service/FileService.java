@@ -24,7 +24,7 @@ import java.util.Objects;
 @Service
 public class FileService {
 
-    public static final String uploadDir = "artists/";
+    public static final String uploadDir = "artists" + File.separator;
     public static final String imageArtistFileName = "artistLogo";
     public static final String imageAlbumFileName = "albumLogo";
 
@@ -38,9 +38,7 @@ public class FileService {
 
     private final List<String> albumTrackNames;
 
-
-    FileService()
-    {
+    FileService() {
         this.image = null;
         this.artistId = null;
         this.audioFiles = null;
@@ -48,17 +46,15 @@ public class FileService {
         this.albumTrackNames = null;
     }
 
-    FileService(MultipartFile image, Long artistId)
-    {
+    FileService(MultipartFile image, Long artistId) {
         this.image = image;
         this.artistId = artistId;
         this.albumTrackNames = null;
-        audioFiles = null;
-        albumId = null;
+        this.audioFiles = null;
+        this.albumId = null;
     }
 
-    FileService(MultipartFile albumImage, Long artistId, List<MultipartFile> audioFiles, Album album)
-    {
+    FileService(MultipartFile albumImage, Long artistId, List<MultipartFile> audioFiles, Album album) {
         this.image = albumImage;
         this.artistId = artistId;
         this.audioFiles = audioFiles;
@@ -67,17 +63,17 @@ public class FileService {
     }
 
     public String saveArtistImage() throws IOException {
-        String artistDir = uploadDir + artistId + "/";
+        String artistDir = uploadDir + artistId + File.separator;
         return saveImageFile(image, artistDir);
     }
 
     public String saveAlbumImage() throws IOException {
-        String albumDir = uploadDir + artistId + "/Albums/" + albumId + "/";
-        return saveImageFile(image,albumDir);
+        String albumDir = uploadDir + artistId + File.separator + "Albums" + File.separator + albumId + File.separator;
+        return saveImageFile(image, albumDir);
     }
 
     public List<String> saveAlbumAudioFiles() throws IOException {
-        String artistDir = uploadDir + artistId + "/Albums/" + albumId + "/Tracks/";
+        String artistDir = uploadDir + artistId + File.separator + "Albums" + File.separator + albumId + File.separator + "Tracks" + File.separator;
         List<String> audioFilesPath = new ArrayList<>();
         for (int i = 0; i < audioFiles.size(); i++) {
             audioFilesPath.add(saveAudioFile(audioFiles.get(i), artistDir, albumTrackNames.get(i)));
@@ -92,8 +88,7 @@ public class FileService {
             Files.createDirectories(uploadPath);
         }
 
-        if (directory.contains("/Albums/"))
-        {
+        if (directory.contains(File.separator + "Albums" + File.separator)) {
             Path filePath = uploadPath.resolve(imageAlbumFileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             return filePath.toString();
@@ -104,15 +99,14 @@ public class FileService {
         return filePath.toString();
     }
 
-    private String saveAudioFile(MultipartFile file,String directory,String trackName) throws IOException {
-
+    private String saveAudioFile(MultipartFile file, String directory, String trackName) throws IOException {
         Path uploadPath = Paths.get(directory);
 
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
 
-        Path filePath = uploadPath.resolve(trackName+".mp3");
+        Path filePath = uploadPath.resolve(trackName + ".mp3");
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         return filePath.toString();
     }
@@ -127,5 +121,5 @@ public class FileService {
 
         return musicFile;
     }
-
 }
+

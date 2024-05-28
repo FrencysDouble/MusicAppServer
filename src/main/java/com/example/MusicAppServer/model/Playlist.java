@@ -2,6 +2,7 @@ package com.example.MusicAppServer.model;
 
 
 import jakarta.persistence.*;
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,12 +20,13 @@ public class Playlist {
     @Column(name = "id")
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "creatorId")
-    private User creator;
 
-    @Column(name = "createdBy")
-    private String createdBy;
+    @Column(name = "playlist_name")
+    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "creator")
+    private User creator;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

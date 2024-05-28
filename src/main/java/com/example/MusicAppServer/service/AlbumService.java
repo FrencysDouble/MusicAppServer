@@ -9,10 +9,15 @@ import com.example.MusicAppServer.repositories.ArtistRepository;
 import com.example.MusicAppServer.repositories.TrackRepository;
 import com.example.MusicAppServer.service.state.OperationResult;
 import com.example.MusicAppServer.service.state.OperationStatus;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -23,10 +28,13 @@ public class AlbumService {
 
     private final ArtistRepository artistRepository;
 
-    public AlbumService(AlbumRepository albumRepository, TrackRepository trackRepository, ArtistRepository artistRepository) {
+    private final FileService fileService;
+
+    public AlbumService(AlbumRepository albumRepository, TrackRepository trackRepository, ArtistRepository artistRepository, FileService fileService) {
         this.albumRepository = albumRepository;
         this.trackRepository = trackRepository;
         this.artistRepository = artistRepository;
+        this.fileService = fileService;
     }
 
 
@@ -108,6 +116,23 @@ public class AlbumService {
                 return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
             }
             return new OperationResult<>(OperationStatus.SUCCESS,albums);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public OperationResult getById(Long id)
+    {
+        try {
+            Album album = albumRepository.findAlbumById(id);
+            if (album == null)
+            {
+                return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new OperationResult<>(OperationStatus.SUCCESS,album);
         }
         catch (Exception e)
         {

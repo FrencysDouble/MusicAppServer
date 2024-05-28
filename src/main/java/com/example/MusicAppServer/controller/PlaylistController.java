@@ -3,6 +3,7 @@ package com.example.MusicAppServer.controller;
 
 import com.example.MusicAppServer.model.Artist;
 import com.example.MusicAppServer.model.Playlist;
+import com.example.MusicAppServer.model.dto.PlaylistDTO;
 import com.example.MusicAppServer.service.PlaylistService;
 import com.example.MusicAppServer.service.ResponseService;
 import com.example.MusicAppServer.service.state.OperationResult;
@@ -24,13 +25,13 @@ public class PlaylistController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity createPlaylist(@RequestBody Playlist playlist,@RequestParam Long createdById)
+    public ResponseEntity createPlaylist(@RequestBody PlaylistDTO playlistDTO)
     {
-        OperationResult status = playlistService.createPlaylist(playlist,createdById);
+        OperationResult status = playlistService.createPlaylist(playlistDTO);
         return responseService.buildResponse(status.getStatus() , status.getData());
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity getById(@PathVariable Long id)
     {
         OperationResult status = playlistService.getById(id);

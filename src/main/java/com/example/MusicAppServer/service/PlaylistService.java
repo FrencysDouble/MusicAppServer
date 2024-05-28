@@ -5,6 +5,7 @@ import com.example.MusicAppServer.model.Album;
 import com.example.MusicAppServer.model.Playlist;
 import com.example.MusicAppServer.model.Track;
 import com.example.MusicAppServer.model.User;
+import com.example.MusicAppServer.model.dto.PlaylistDTO;
 import com.example.MusicAppServer.repositories.AuthRepository;
 import com.example.MusicAppServer.repositories.PlaylistRepository;
 import com.example.MusicAppServer.repositories.TrackRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlaylistService {
@@ -30,21 +32,22 @@ public class PlaylistService {
         this.trackRepository = trackRepository;
     }
 
-    public OperationResult createPlaylist(Playlist playlist,Long id)
+    public OperationResult createPlaylist(PlaylistDTO playlistDTO)
     {
         try {
-            if (playlist == null)
+            if (playlistDTO == null)
             {
                 return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS);
             }
-            User user = authRepository.getById(id);
+            User user = authRepository.getById(playlistDTO.getCreatorId());
             if (user == null)
             {
                 return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
             }
+            Playlist playlist = new Playlist();
 
             playlist.setCreator(user);
-            playlist.setCreatedBy(user.getUserName());
+            playlist.setName(playlistDTO.getName());
             playlistRepository.save(playlist);
 
             return new OperationResult<>(OperationStatus.SUCCESS);
@@ -76,7 +79,7 @@ public class PlaylistService {
     public OperationResult getById(Long id)
     {
         try {
-            Playlist playlist = playlistRepository.getById(id);
+            Optional<Playlist> playlist = playlistRepository.findById(id);
             if (playlist == null)
             {
                 return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);

@@ -1,10 +1,7 @@
 package com.example.MusicAppServer.controller;
 
-import com.example.MusicAppServer.repositories.TrackRepository;
 import com.example.MusicAppServer.service.MusicService;
-import com.example.MusicAppServer.service.ResponseService;
 import com.example.MusicAppServer.service.state.OperationResult;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -13,17 +10,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 
 @RestController
-@RequestMapping("/api/v1/music")
-public class MusicController {
+@RequestMapping("/api/v1/file")
+public class FileController {
 
     private final MusicService musicService;
 
-    public MusicController(MusicService musicService) {
+
+    public FileController(MusicService musicService) {
         this.musicService = musicService;
     }
 
@@ -69,6 +66,15 @@ public class MusicController {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    @GetMapping("/getIMG")
+    public ResponseEntity<Resource> getIMG(@RequestParam String path) throws FileNotFoundException {
+        Resource resource = musicService.getImage(path);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
 }

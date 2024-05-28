@@ -1,6 +1,7 @@
 package com.example.MusicAppServer.service;
 
 import com.example.MusicAppServer.model.User;
+import com.example.MusicAppServer.model.UserDTO;
 import com.example.MusicAppServer.model.request.RequestUser;
 import com.example.MusicAppServer.repositories.AuthRepository;
 import com.example.MusicAppServer.service.state.OperationResult;
@@ -22,13 +23,15 @@ public class AuthService {
     private final HttpSession httpSession;
     private final IDSessionProvider idSessionProvider;
 
+    UserDTO userDTO = new UserDTO();
+
     public AuthService(AuthRepository authRepository, HttpSession httpSession, IDSessionProvider idSessionProvider) {
         this.authRepository = authRepository;
         this.httpSession = httpSession;
         this.idSessionProvider = idSessionProvider;
     }
 
-    public OperationResult<String> registerUser(User user)
+    public OperationResult registerUser(User user)
     {
         String password = user.getPassword();
         String sessionId = idSessionProvider.getSessionId();
@@ -38,23 +41,37 @@ public class AuthService {
         try {
             authRepository.save(user);
 
-            httpSession.setAttribute("id", sessionId);
+            httpSession.setAttribute("sessionId", sessionId);
+            httpSession.setAttribute("userId",user.getId());
+
+            userDTO.setUuid(sessionId);
+            userDTO.setId(user.getId().toString());
         }
         catch (DataAccessException e) {
             e.printStackTrace();
             return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
         }
-        return new OperationResult<>(OperationStatus.SUCCESS, sessionId);
+        return new OperationResult<>(OperationStatus.SUCCESS,userDTO);
     }
 
-    public OperationResult<String> authUser(RequestUser requestUser)
+    public OperationResult authUser(RequestUser requestUser)
     {
         String sessionId = idSessionProvider.getSessionId();
         try {
             User user = authRepository.findByEmail(requestUser.getEmail());
             if (user != null && user.getPassword().equals(requestUser.getPassword())) {
+
+
                 httpSession.setAttribute("id",sessionId);
-                return new OperationResult<>(OperationStatus.SUCCESS, sessionId);
+                httpSession.setAttribute("userId",user.getId());
+
+
+                userDTO.setUuid(sessionId);
+                userDTO.setId(user.getId().toString());
+
+                System.out.println(user.getId());
+
+                return new OperationResult<>(OperationStatus.SUCCESS, userDTO);
             }
             else {
                 return new OperationResult<>(OperationStatus.INVALID_CREDENTIALS);
@@ -65,4 +82,9 @@ public class AuthService {
             return new OperationResult<>(OperationStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public String getUserIdFromSession() {
+        return (String) httpSession.getAttribute("userId");
+    }
+
 }
