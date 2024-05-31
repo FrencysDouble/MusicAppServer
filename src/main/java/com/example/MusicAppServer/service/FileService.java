@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,9 +18,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This is main Service to work with files such us: Music, Image
@@ -25,6 +30,8 @@ import java.util.Objects;
 public class FileService {
 
     public static final String uploadDir = "artists" + File.separator;
+
+    public static final String uploadPlaylistDir = "user" + File.separator;
     public static final String imageArtistFileName = "artistLogo";
     public static final String imageAlbumFileName = "albumLogo";
 
@@ -121,5 +128,81 @@ public class FileService {
 
         return musicFile;
     }
+    public String generatePlaylistImage(List<String> trackImagePaths, String playlistId, String userId) throws IOException, NoSuchAlgorithmException {
+        if (trackImagePaths.isEmpty()) {
+            throw new IllegalArgumentException("At least 1 image is required to generate the playlist image");
+        }
+
+        // Уникализируем изображения
+        List<String> uniqueTrackImagePaths = getUniqueImagePaths(trackImagePaths);
+
+        BufferedImage combined;
+        if (uniqueTrackImagePaths.size() < 4) {
+            combined = ImageIO.read(new File(uniqueTrackImagePaths.get(0)));
+        } else {
+            BufferedImage image1 = ImageIO.read(new File(uniqueTrackImagePaths.get(0)));
+            BufferedImage image2 = ImageIO.read(new File(uniqueTrackImagePaths.get(1)));
+            BufferedImage image3 = ImageIO.read(new File(uniqueTrackImagePaths.get(2)));
+            BufferedImage image4 = ImageIO.read(new File(uniqueTrackImagePaths.get(3)));
+
+            int width = image1.getWidth() * 2;
+            int height = image1.getHeight() * 2;
+            combined = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+            Graphics2D g = combined.createGraphics();
+            g.drawImage(image1, 0, 0, null);
+            g.drawImage(image2, image1.getWidth(), 0, null);
+            g.drawImage(image3, 0, image1.getHeight(), null);
+            g.drawImage(image4, image1.getWidth(), image1.getHeight(), null);
+            g.dispose();
+        }
+
+        String playlistDir = uploadPlaylistDir + userId + File.separator + "playlist" + File.separator + playlistId;
+        Path uploadPath = Paths.get(playlistDir);
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        String playlistImagePath = playlistDir + File.separator + "playlistImage.png";
+        File outputfile = new File(playlistImagePath);
+        ImageIO.write(combined, "PNG", outputfile);
+
+        return playlistImagePath;
+    }
+
+    private List<String> getUniqueImagePaths(List<String> imagePaths) throws IOException, NoSuchAlgorithmException {
+        Set<String> uniqueHashes = new HashSet<>();
+        List<String> uniquePaths = new ArrayList<>();
+
+        for (String path : imagePaths) {
+            File file = new File(path);
+            BufferedImage image = ImageIO.read(file);
+            String hash = hashImage(image);
+
+            if (!uniqueHashes.contains(hash)) {
+                uniqueHashes.add(hash);
+                uniquePaths.add(path);
+            }
+
+            if (uniquePaths.size() >= 4) {
+                break;
+            }
+        }
+
+        return uniquePaths;
+    }
+
+    private String hashImage(BufferedImage image) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(((DataBufferByte) image.getRaster().getDataBuffer()).getData());
+        byte[] digest = md.digest();
+        StringBuilder sb = new StringBuilder();
+        for (byte b : digest) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
 }
 

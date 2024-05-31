@@ -30,7 +30,12 @@ public class PlaylistController {
         OperationResult status = playlistService.createPlaylist(playlistDTO);
         return responseService.buildResponse(status.getStatus() , status.getData());
     }
-
+    @PostMapping("/addTrack")
+    public ResponseEntity addTrack(@RequestParam Long playlistId,@RequestParam Long trackId)
+    {
+        OperationResult status = playlistService.addTrackToPlaylist(playlistId,trackId);
+        return responseService.buildResponse(status.getStatus(),status.getListData());
+    }
     @GetMapping("/get/{id}")
     public ResponseEntity getById(@PathVariable Long id)
     {
@@ -44,11 +49,11 @@ public class PlaylistController {
         OperationResult status = playlistService.getAll();
         return responseService.buildResponse(status.getStatus(),status.getListData());
     }
-
-    @PostMapping("/addTrack")
-    public ResponseEntity addTrack(@RequestParam Long playlistId,@RequestParam Long trackId)
+    @GetMapping("getAll/{id}")
+    public ResponseEntity getAllByCreator(@PathVariable Long id)
     {
-        OperationResult status = playlistService.addTrackToPlaylist(playlistId,trackId);
+        OperationResult status = playlistService.getAllByCreator(id);
         return responseService.buildResponse(status.getStatus(),status.getListData());
     }
+
 }

@@ -24,9 +24,14 @@ public class Playlist {
     @Column(name = "playlist_name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "creator")
-    private User creator;
+    @Column(name = "creatorId")
+    private Long creatorId;
+
+    @Column(name = "creatorName")
+    private String creatorName;
+
+    @Column(name = "playlist_image_path")
+    private String image_path;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
