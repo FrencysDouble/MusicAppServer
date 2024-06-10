@@ -57,7 +57,7 @@ public class FileController {
             inputStream.skip(rangeStart);
 
             return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+                    .header(HttpHeaders.CONTENT_TYPE, "audio/mpeg")
                     .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(contentLength))
                     .header(HttpHeaders.CONTENT_RANGE, "bytes " + rangeStart + "-" + rangeEnd + "/" + fileLength)
                     .body(new InputStreamResource(inputStream));

@@ -5,10 +5,7 @@ import com.example.MusicAppServer.service.ResponseService;
 import com.example.MusicAppServer.service.TrackService;
 import com.example.MusicAppServer.service.state.OperationResult;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/track")
@@ -29,5 +26,13 @@ public class TrackController {
         OperationResult status = trackService.getByName(name);
         return responseService.buildResponse(status.getStatus(),status.getListData());
     }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity getById(@PathVariable Long id)
+    {
+        OperationResult status = trackService.getById(id);
+        return responseService.buildResponse(status.getStatus(),status.getData());
+    }
+
 
 }

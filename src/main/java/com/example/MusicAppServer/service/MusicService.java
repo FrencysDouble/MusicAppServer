@@ -35,6 +35,7 @@ public class MusicService {
         if (!musicFile.exists()) {
             throw new FileNotFoundException("Music file not found: " + path);
         }
+        System.out.println(musicFile);
         return musicFile;
     }
 
